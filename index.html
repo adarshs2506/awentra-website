@@ -117,25 +117,58 @@
   .btn-outline{ border-color:rgba(237,234,225,0.35); color:var(--paper); }
   .btn-outline:hover{ border-color:var(--paper); background:rgba(237,234,225,0.06); }
   .btn-ink{ background:var(--ink); color:var(--paper); }
-  .btn-ink:hover{ background:#000; transform:translateY(-1px); }
-  .menu-toggle{ display:none; }
+.btn-ink:hover{ background:#000; transform:translateY(-1px); }
 
-  @media (max-width:960px){
-    nav.primary-nav{
-      position:fixed; inset:0 0 0 auto; width:min(320px,80vw); height:100vh;
-      background:var(--graphite); flex-direction:column; align-items:flex-start;
-      padding:100px 32px 40px; gap:26px;
-      transform:translateX(100%); transition:transform .45s var(--ease);
-    }
-    nav.primary-nav.open{transform:translateX(0);}
-    nav.primary-nav a{font-size:17px;}
-    .header-actions .btn-outline{display:none;}
-    .menu-toggle{
-      display:flex; flex-direction:column; gap:5px; width:26px; z-index:210;
-      background:none; border:none; padding:6px;
-    }
-    .menu-toggle span{height:1.5px; width:100%; background:var(--paper); transition:all .3s;}
+/* Demo Button in Navigation */
+.nav-demo{
+  display:inline-flex;
+  align-items:center;
+  padding:10px 18px;
+  background:var(--brass);
+  color:var(--ink) !important;
+  font-size:13px !important;
+  font-weight:600 !important;
+  border-radius:var(--radius);
+  transition:all .3s var(--ease);
+}
+
+.nav-demo:hover{
+  background:#c39d63;
+  transform:translateY(-1px);
+}
+
+@media (max-width:960px){
+  .nav-demo{
+    background:transparent;
+    padding:0;
+    font-size:17px !important;
   }
+}
+
+.menu-toggle{ display:none; }
+
+@media (max-width:960px){
+  nav.primary-nav{
+    position:fixed; inset:0 0 0 auto; width:min(320px,80vw); height:100vh;
+    background:var(--graphite); flex-direction:column; align-items:flex-start;
+    padding:100px 32px 40px; gap:26px;
+    transform:translateX(100%); transition:transform .45s var(--ease);
+  }
+
+  nav.primary-nav.open{transform:translateX(0);}
+  nav.primary-nav a{font-size:17px;}
+  .header-actions .btn-outline{display:none;}
+
+  .menu-toggle{
+    display:flex; flex-direction:column; gap:5px; width:26px; z-index:210;
+    background:none; border:none; padding:6px;
+  }
+
+  .menu-toggle span{
+    height:1.5px; width:100%; background:var(--paper);
+    transition:all .3s;
+  }
+}
 
   /* HERO */
   .hero{
