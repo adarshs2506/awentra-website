@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awentra — 3D Walkthrough &amp; Real Estate Visualization Studio, Lucknow</title>
+<meta name="description" content="Awentra creates custom 3D walkthroughs, architectural visualization and real estate marketing creatives that turn plans into experiences. 3D rendering company serving developers, builders and architects across India.">
+<meta name="keywords" content="3D walkthrough company, 3D walkthrough services, real estate 3D visualization, architectural visualization, 3D architectural rendering, real estate animation, 3D walkthrough India, 3D walkthrough Lucknow, real estate marketing company, 3D rendering company India, 3D exterior visualization, 3D interior visualization, real estate project visualization">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --graphite:#14161a;
+    --graphite-2:#1c2026;
+    --graphite-line: rgba(237,234,225,0.08);
+    --concrete:#eeece6;
+    --concrete-2:#e4e0d5;
+    --ink:#14161a;
+    --paper:#f6f4ee;
+    --steel:#8b8d93;
+    --steel-dark:#5b5e64;
+    --blueprint:#4a72b8;
+    --blueprint-dim: rgba(74,114,184,0.35);
+    --brass:#b08d57;
+    --radius: 2px;
+    --maxw: 1240px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Fraunces',serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img,svg{display:block; max-width:100%;}
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:2px solid var(--blueprint); outline-offset:3px;}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 40px;}
+  @media (max-width:720px){ .wrap{padding:0 22px;} }
+
+  .eyebrow{
+    font-family:'Fraunces',serif;
+    font-size:11.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--brass);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1px;background:var(--brass);display:inline-block;}
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    letter-spacing:-0.01em;
+    line-height:1.08;
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:22px 0;
+    transition:background .4s var(--ease), padding .4s var(--ease), border-color .4s var(--ease);
+    border-bottom:1px solid transparent;
+  }
+  header.solid{
+    background:rgba(20,22,26,0.92);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+    border-bottom:1px solid var(--graphite-line);
+  }
+  header .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo{
+    font-family:'Fraunces',serif;
+    font-size:22px;
+    font-weight:600;
+    color:var(--paper);
+    letter-spacing:.02em;
+  }
+  .logo span{color:var(--brass);}
+  nav.primary-nav{display:flex; align-items:center; gap:38px;}
+  nav.primary-nav a{
+    font-size:14px; color:var(--concrete-2); font-weight:500;
+    position:relative; padding:4px 0;
+  }
+  nav.primary-nav a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1px; background:var(--brass);
+    transition:width .3s var(--ease);
+  }
+  nav.primary-nav a:hover::after{width:100%;}
+  .header-actions{display:flex; align-items:center; gap:18px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:13.5px; font-weight:600;
+    padding:12px 22px;
+    border-radius:var(--radius);
+    border:1px solid transparent;
+    transition:all .3s var(--ease);
+    white-space:nowrap;
+  }
+  .btn-brass{ background:var(--brass); color:#14161a; }
+  .btn-brass:hover{ background:#c39d63; transform:translateY(-1px); }
+  .btn-outline{ border-color:rgba(237,234,225,0.35); color:var(--paper); }
+  .btn-outline:hover{ border-color:var(--paper); background:rgba(237,234,225,0.06); }
+  .btn-ink{ background:var(--ink); color:var(--paper); }
+  .btn-ink:hover{ background:#000; transform:translateY(-1px); }
+  .menu-toggle{ display:none; }
+
+  @media (max-width:960px){
+    nav.primary-nav{
+      position:fixed; inset:0 0 0 auto; width:min(320px,80vw); height:100vh;
+      background:var(--graphite); flex-direction:column; align-items:flex-start;
+      padding:100px 32px 40px; gap:26px;
+      transform:translateX(100%); transition:transform .45s var(--ease);
+    }
+    nav.primary-nav.open{transform:translateX(0);}
+    nav.primary-nav a{font-size:17px;}
+    .header-actions .btn-outline{display:none;}
+    .menu-toggle{
+      display:flex; flex-direction:column; gap:5px; width:26px; z-index:210;
+      background:none; border:none; padding:6px;
+    }
+    .menu-toggle span{height:1.5px; width:100%; background:var(--paper); transition:all .3s;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    background:var(--graphite);
+    color:var(--paper);
+    display:flex; align-items:center;
+    padding:140px 0 80px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(var(--graphite-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--graphite-line) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 90%);
+    opacity:.7;
+  }
+  .hero .wrap{position:relative; z-index:2; display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center;}
+  @media (max-width:960px){ .hero .wrap{grid-template-columns:1fr;} .hero-visual{order:-1; height:280px;} }
+
+  .hero-eyebrow{color:var(--brass); margin-bottom:26px;}
+  .hero h1{
+    font-size:clamp(38px,5.4vw,68px);
+    font-weight:400;
+    color:var(--paper);
+    max-width:14ch;
+  }
+  .hero h1 em{font-style:italic; color:var(--blueprint); font-weight:400;}
+  .hero p.lede{
+    margin-top:26px; max-width:46ch; color:var(--steel);
+    font-size:17px; line-height:1.65;
+  }
+  .hero-cta{display:flex; gap:16px; margin-top:40px; flex-wrap:wrap;}
+  .hero-meta{
+    margin-top:56px; display:flex; gap:36px; flex-wrap:wrap;
+    font-family:'Fraunces',serif; font-size:12px; color:var(--steel);
+  }
+  .hero-meta b{display:block; color:var(--paper); font-size:20px; font-family:'Fraunces',serif; font-weight:500;}
+
+  .hero-visual{position:relative; height:460px;}
+  .hero-visual svg{width:100%; height:100%;}
+  .draw-line{
+    stroke-dasharray:2200;
+    stroke-dashoffset:2200;
+    animation:draw 2.6s var(--ease) forwards .3s;
+  }
+  @keyframes draw{ to{stroke-dashoffset:0;} }
+  .fill-fade{ opacity:0; animation:fadein 1.4s ease forwards 2.1s; }
+  @keyframes fadein{ to{opacity:1;} }
+
+
+  /* ---------- INTERACTIVE 3D HERO MODEL ---------- */
+  .hero-3d{
+    position:relative; width:100%; height:460px;
+    perspective:1100px; display:flex; align-items:center; justify-content:center;
+  }
+  .model-3d{
+    position:relative; width:300px; height:260px;
+    transform-style:preserve-3d;
+    transform:rotateX(12deg) rotateY(-28deg);
+    animation: modelFloat 7s ease-in-out infinite;
+  }
+  .model-3d:hover{ animation-play-state:paused; }
+  @keyframes modelFloat{
+    0%,100%{transform:rotateX(12deg) rotateY(-28deg) translateY(0)}
+    50%{transform:rotateX(15deg) rotateY(28deg) translateY(-12px)}
+  }
+  .house-face{
+    position:absolute; width:220px; height:190px; left:40px; top:45px;
+    border:1px solid rgba(176,141,87,.65);
+    background:linear-gradient(145deg,#252a32,#111419);
+    box-shadow:0 0 40px rgba(74,114,184,.12);
+  }
+  .house-front{transform:translateZ(55px);}
+  .house-back{transform:rotateY(180deg) translateZ(55px);}
+  .house-side{width:110px; left:150px; transform:rotateY(90deg) translateZ(55px);}
+  .house-roof{
+    position:absolute; width:235px; height:235px; left:32px; top:22px;
+    border-left:1px solid rgba(74,114,184,.6);
+    border-top:1px solid rgba(74,114,184,.6);
+    transform:rotateX(62deg) translateZ(55px);
+    background:linear-gradient(135deg,rgba(74,114,184,.12),rgba(176,141,87,.08));
+  }
+  .window{
+    position:absolute; width:48px; height:55px; top:55px;
+    border:1px solid rgba(74,114,184,.8);
+    background:linear-gradient(135deg,rgba(74,114,184,.5),rgba(176,141,87,.18));
+    box-shadow:inset 0 0 16px rgba(74,114,184,.18);
+  }
+  .w1{left:28px}.w2{left:88px}.w3{left:148px}
+  .door{
+    position:absolute; width:42px; height:78px; left:89px; bottom:0;
+    border:1px solid rgba(176,141,87,.9);
+    background:linear-gradient(180deg,#2b2418,#8d6c3c);
+  }
+  .balcony{
+    position:absolute; width:150px; height:12px; left:35px; top:123px;
+    border:1px solid rgba(176,141,87,.7);
+    transform:translateZ(3px);
+  }
+  .balcony::after{
+    content:""; position:absolute; left:0; right:0; top:-22px; height:22px;
+    border:1px solid rgba(176,141,87,.45); border-bottom:0;
+  }
+  .ground{
+    position:absolute; width:390px; height:250px; left:-45px; top:75px;
+    transform:rotateX(70deg) translateZ(-40px);
+    background:radial-gradient(ellipse,rgba(74,114,184,.22),transparent 62%);
+    border:1px solid rgba(74,114,184,.25);
+  }
+  .model-label{
+    position:absolute; right:0; bottom:15px;
+    font-family:'Fraunces',serif; font-size:11px;
+    color:var(--steel); letter-spacing:.08em; text-transform:uppercase;
+  }
+  @media (max-width:960px){
+    .hero-3d{height:300px; order:-1;}
+    .model-3d{transform:scale(.78) rotateX(12deg) rotateY(-28deg);}
+    @keyframes modelFloat{
+      0%,100%{transform:scale(.78) rotateX(12deg) rotateY(-28deg) translateY(0)}
+      50%{transform:scale(.78) rotateX(15deg) rotateY(28deg) translateY(-10px)}
+    }
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{ position:relative; }
+  .section-pad{ padding:120px 0; }
+  @media (max-width:720px){ .section-pad{padding:80px 0;} }
+  .section-head{ max-width:640px; margin-bottom:64px; }
+  .section-head h2{ font-size:clamp(28px,3.6vw,44px); margin-top:18px; font-weight:400; }
+  .section-head p{ margin-top:18px; color:var(--steel-dark); font-size:16px; max-width:52ch; }
+  .light{ background:var(--paper); color:var(--ink); }
+  .concrete{ background:var(--concrete); color:var(--ink); }
+  .dark{ background:var(--graphite); color:var(--paper); }
+  .dark .section-head p{color:var(--steel);}
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- INTRO ---------- */
+  .intro-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:70px; align-items:start; }
+  @media (max-width:820px){ .intro-grid{grid-template-columns:1fr; gap:40px;} }
+  .intro-grid h2{ font-size:clamp(26px,3vw,36px); font-weight:400; margin-bottom:22px;}
+  .intro-grid p{ color:var(--steel-dark); font-size:16.5px; max-width:52ch; }
+  .fact-list{ border-top:1px solid rgba(20,22,26,0.12); }
+  .fact-list li{
+    display:flex; justify-content:space-between; gap:20px;
+    padding:20px 0; border-bottom:1px solid rgba(20,22,26,0.12);
+    font-size:14.5px;
+  }
+  .fact-list li b{ font-family:'Fraunces',serif; font-weight:500; font-size:16px; }
+  .fact-list li span:first-child{ color:var(--steel-dark); font-family:'Fraunces',serif; font-size:12px; letter-spacing:.04em; text-transform:uppercase; align-self:center;}
+
+  /* ---------- SERVICES ---------- */
+  .service-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(20,22,26,0.1); border:1px solid rgba(20,22,26,0.1); }
+  @media (max-width:900px){ .service-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .service-grid{grid-template-columns:1fr;} }
+  .service-card{
+    background:var(--paper); padding:38px 32px; min-height:260px;
+    display:flex; flex-direction:column; gap:16px;
+    transition:background .3s;
+  }
+  .service-card:hover{ background:var(--concrete); }
+  .service-num{ font-family:'Fraunces',serif; font-size:12px; color:var(--brass); }
+  .service-card h3{ font-size:21px; font-weight:500; }
+  .service-card p{ color:var(--steel-dark); font-size:14.5px; flex:1; }
+  .service-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-top:8px; }
+  .service-tags span{
+    font-family:'Fraunces',serif; font-size:10.5px; letter-spacing:.03em;
+    padding:5px 9px; border:1px solid rgba(20,22,26,0.15); color:var(--steel-dark);
+    text-transform:uppercase;
+  }
+
+  /* ---------- PORTFOLIO ---------- */
+  .portfolio-tabs{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:44px; }
+  .portfolio-tabs button{
+    background:none; border:1px solid rgba(246,244,238,0.25); color:var(--steel);
+    padding:9px 18px; font-size:13px; font-family:'Fraunces',serif;
+    border-radius:20px; transition:all .3s;
+  }
+  .portfolio-tabs button.active, .portfolio-tabs button:hover{
+    border-color:var(--brass); color:var(--paper); background:rgba(176,141,87,0.12);
+  }
+  .portfolio-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
+  @media (max-width:900px){ .portfolio-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .portfolio-grid{grid-template-columns:1fr;} }
+  .p-tile{
+    position:relative; aspect-ratio:4/5; overflow:hidden; border-radius:var(--radius);
+    background:linear-gradient(160deg,#1c2026,#14161a);
+    border:1px solid var(--graphite-line);
+  }
+  .p-tile svg{ position:absolute; inset:0; width:100%; height:100%; opacity:.9; }
+  .p-tile img{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .6s var(--ease);
+  }
+  .p-tile:hover img{ transform:scale(1.05); }
+  .p-tile .p-tag{
+    position:absolute; left:18px; bottom:18px; z-index:2;
+    font-family:'Fraunces',serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--paper);
+  }
+  .p-tile .p-cat{
+    position:absolute; left:18px; top:18px; z-index:2;
+    font-family:'Fraunces',serif; font-size:20px; color:var(--paper); font-weight:500;
+  }
+  .p-tile::after{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,0.65), transparent 55%);
+  }
+  .p-tile.interactive{ cursor:pointer; }
+  .p-tile.interactive .p-hint{
+    position:absolute; right:14px; top:14px; z-index:2;
+    font-family:'Inter',sans-serif; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--paper); border:1px solid rgba(237,234,225,0.45); padding:5px 10px; border-radius:20px;
+    background:rgba(20,22,26,0.35);
+  }
+
+  /* ---------- LIGHTBOX / PLOT MAP ---------- */
+  .lb-overlay{
+    position:fixed; inset:0; background:rgba(10,11,13,0.82); z-index:500;
+    display:none; align-items:center; justify-content:center; padding:24px;
+  }
+  .lb-overlay.open{ display:flex; }
+  .lb-card{
+    background:var(--graphite-2); border:1px solid var(--graphite-line); border-radius:var(--radius);
+    max-width:520px; width:100%; max-height:88vh; overflow-y:auto; padding:28px;
+    font-family:'Inter',sans-serif;
+  }
+  .lb-head{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; }
+  .lb-head h3{ font-family:'Fraunces',serif; color:var(--paper); font-size:22px; font-weight:500; }
+  .lb-head p{ color:var(--steel); font-size:13px; margin-top:4px; }
+  .lb-close{ background:none; border:1px solid rgba(237,234,225,0.3); color:var(--paper); width:30px; height:30px; border-radius:50%; font-size:15px; line-height:1; }
+  .lb-close:hover{ border-color:var(--paper); }
+  .plot-legend{ display:flex; gap:16px; font-size:12px; color:var(--steel); margin-bottom:14px; }
+  .plot-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .plot-dot{ width:8px; height:8px; border-radius:2px; display:inline-block; }
+  .plot-dot.available{ background:var(--blueprint); }
+  .plot-dot.booked{ background:var(--brass); }
+  .plot-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .plot-cell{
+    border:1px solid var(--graphite-line); border-radius:var(--radius); padding:16px;
+    background:var(--graphite); cursor:pointer; text-align:left; color:var(--paper);
+    display:flex; flex-direction:column; gap:6px; transition:border-color .2s var(--ease);
+  }
+  .plot-cell:hover{ border-color:var(--steel); }
+  .plot-cell .num{ font-family:'Fraunces',serif; font-size:28px; }
+  .plot-cell .status{ font-size:11px; letter-spacing:.06em; text-transform:uppercase; }
+  .plot-cell.available .status{ color:var(--blueprint); }
+  .plot-cell.booked .status{ color:var(--brass); }
+  .plot-detail{
+    margin-top:16px; padding-top:16px; border-top:1px solid var(--graphite-line);
+    font-size:13.5px; color:var(--steel); min-height:20px;
+  }
+  .plot-detail a{ color:var(--brass); border-bottom:1px solid rgba(176,141,87,0.4); }
+
+  /* ---------- WHY ---------- */
+  .why-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:52px 40px; }
+  @media (max-width:820px){ .why-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .why-grid{grid-template-columns:1fr;} }
+  .why-item{ padding-top:22px; border-top:1px solid rgba(20,22,26,0.15); }
+  .why-item h3{ font-size:19px; font-weight:500; margin-bottom:10px; }
+  .why-item p{ color:var(--steel-dark); font-size:14.5px; }
+
+  /* ---------- PROCESS ---------- */
+  .process-list{ counter-reset:step; }
+  .process-item{
+    display:grid; grid-template-columns:120px 1fr; gap:34px;
+    padding:36px 0; border-top:1px solid var(--graphite-line);
+    align-items:start;
+  }
+  .process-item:last-child{ border-bottom:1px solid var(--graphite-line); }
+  @media (max-width:640px){ .process-item{grid-template-columns:60px 1fr; gap:18px;} }
+  .process-num{ font-family:'Fraunces',serif; font-size:14px; color:var(--brass); padding-top:4px;}
+  .process-item h3{ font-size:22px; font-weight:500; color:var(--paper); margin-bottom:8px;}
+  .process-item p{ color:var(--steel); font-size:15px; max-width:56ch; }
+
+  /* ---------- WHO WE WORK WITH ---------- */
+  .who-chips{ display:flex; flex-wrap:wrap; gap:14px; }
+  .who-chips span{
+    font-family:'Fraunces',serif; font-size:13px;
+    padding:14px 22px; border:1px solid rgba(20,22,26,0.15);
+    color:var(--ink);
+  }
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--graphite-line); border:1px solid var(--graphite-line);}
+  @media (max-width:860px){ .testi-grid{grid-template-columns:1fr;} }
+  .testi-card{ background:var(--graphite); padding:34px 30px; display:flex; flex-direction:column; gap:22px; }
+  .testi-card p{ font-family:'Fraunces',serif; font-size:18px; font-weight:400; line-height:1.5; color:var(--paper); }
+  .testi-who{ font-family:'Fraunces',serif; font-size:11.5px; color:var(--steel); }
+  .testi-who b{ color:var(--brass); display:block; font-size:13px; margin-bottom:2px; font-family:'Fraunces',serif; font-weight:600;}
+
+  /* ---------- CTA ---------- */
+  .cta-band{ background:var(--brass); color:var(--ink); padding:90px 0; text-align:center; }
+  .cta-band h2{ font-size:clamp(30px,4.4vw,52px); font-weight:400; }
+  .cta-band p{ margin-top:16px; font-size:16px; opacity:.85; }
+  .cta-buttons{ display:flex; justify-content:center; gap:16px; margin-top:36px; flex-wrap:wrap; }
+  .cta-band .btn-ink{ background:var(--ink); color:var(--paper);}
+  .cta-band .btn-outline{ border-color:rgba(20,22,26,0.4); color:var(--ink);}
+  .cta-band .btn-outline:hover{ background:rgba(20,22,26,0.08); border-color:var(--ink);}
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:70px; }
+  @media (max-width:900px){ .contact-grid{grid-template-columns:1fr; gap:50px;} }
+  .contact-info h2{ font-size:clamp(26px,3vw,36px); font-weight:400; margin-bottom:18px; }
+  .contact-info p{ color:var(--steel-dark); margin-bottom:34px; max-width:44ch; }
+  .contact-line{ display:flex; align-items:center; gap:14px; padding:16px 0; border-top:1px solid rgba(20,22,26,0.12); }
+  .contact-line:last-of-type{ border-bottom:1px solid rgba(20,22,26,0.12); }
+  .contact-line .ic{ width:18px; height:18px; flex-shrink:0; color:var(--brass); }
+  .contact-line a, .contact-line span{ font-size:15px; }
+  .map-frame{ margin-top:30px; border:1px solid rgba(20,22,26,0.15); height:220px; overflow:hidden; }
+  .map-frame iframe{ width:100%; height:100%; border:0; filter:grayscale(0.3) contrast(1.05);}
+
+  form.enquiry{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  form.enquiry .full{ grid-column:1/-1; }
+  @media (max-width:560px){ form.enquiry{grid-template-columns:1fr;} }
+  .field label{
+    display:block; font-family:'Fraunces',serif; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--steel-dark); margin-bottom:8px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%; background:transparent; border:none; border-bottom:1px solid rgba(20,22,26,0.25);
+    padding:10px 2px; font-family:'Fraunces',serif; font-size:15px; color:var(--ink);
+    transition:border-color .3s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--brass); }
+  .field textarea{ resize:vertical; min-height:90px; }
+  .file-field{
+    border:1px dashed rgba(20,22,26,0.3); padding:20px; text-align:center;
+    font-family:'Fraunces',serif; font-size:12.5px; color:var(--steel-dark);
+  }
+  form.enquiry .submit-row{ margin-top:6px; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--graphite); color:var(--steel); padding:80px 0 30px; }
+  .footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:50px; padding-bottom:60px; border-bottom:1px solid var(--graphite-line); }
+  @media (max-width:820px){ .footer-grid{grid-template-columns:1fr 1fr; row-gap:40px;} }
+  @media (max-width:520px){ .footer-grid{grid-template-columns:1fr;} }
+  .footer-grid h4{ font-family:'Fraunces',serif; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--paper); margin-bottom:20px; font-weight:400;}
+  .footer-grid ul li{ margin-bottom:12px; font-size:14px; }
+  .footer-grid ul li a:hover{ color:var(--brass); }
+  .footer-brand .logo{ margin-bottom:14px; }
+  .footer-brand p{ font-size:14px; max-width:34ch; color:var(--steel); }
+  .footer-social{ display:flex; gap:14px; margin-top:20px; }
+  .footer-social a{ width:34px; height:34px; border:1px solid var(--graphite-line); display:flex; align-items:center; justify-content:center; transition:border-color .3s; }
+  .footer-social a:hover{ border-color:var(--brass); }
+  .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; font-size:12.5px; flex-wrap:wrap; gap:12px; }
+
+  /* ---------- FLOATING ---------- */
+  .floating{ position:fixed; right:26px; bottom:26px; z-index:150; display:flex; flex-direction:column; gap:14px; }
+  .fab{
+    width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 24px rgba(0,0,0,0.25); transition:transform .3s;
+  }
+  .fab:hover{ transform:translateY(-3px) scale(1.04); }
+  .fab-whatsapp{ background:#25D366; color:#fff; }
+  .fab-call{ background:var(--ink); color:var(--paper); }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap">
+    <a href="#home" class="logo">AWENTRA<span>.</span></a>
+    <nav class="primary-nav" id="primaryNav">
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#services">Services</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#process">Our Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a href="#contact" class="btn btn-outline" style="display:inline-flex;">Get a Quote</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<!-- Interactive CSS 3D architectural model added to the hero. No external 3D library required. -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="wrap">
+    <div class="hero-copy">
+      <p class="eyebrow">3D Visualization &amp; Real Estate Marketing — Lucknow, India</p>
+      <h1>We turn real estate projects into <em>experiences.</em></h1>
+      <p class="lede">Custom 3D walkthroughs, architectural visualization and marketing creatives that let people see a project clearly, long before it's built.</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-brass">Get a Free Quote</a>
+        <a href="https://wa.me/917355150877" target="_blank" rel="noopener" class="btn btn-outline">WhatsApp Us</a>
+        <a href="#portfolio" class="btn btn-outline">View Our Work</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>30s–8min</b>walkthrough runtime, built to fit</div>
+        <div><b>Gate to interior</b>full-project coverage</div>
+        <div><b>India-wide</b>developers &amp; architects</div>
+      </div>
+    </div>
+    <div class="hero-3d" aria-label="Interactive 3D architectural model">
+      <div class="ground"></div>
+      <div class="model-3d">
+        <div class="house-roof"></div>
+        <div class="house-face house-front">
+          <div class="window w1"></div><div class="window w2"></div><div class="window w3"></div>
+          <div class="balcony"></div>
+          <div class="door"></div>
+        </div>
+        <div class="house-face house-back"></div>
+        <div class="house-side"></div>
+      </div>
+      <span class="model-label">Interactive 3D Concept</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT / INTRO ================= -->
+<section class="light section-pad" id="about">
+  <div class="wrap intro-grid">
+    <div class="reveal">
+      <p class="eyebrow">About Awentra</p>
+      <h2>A drawing shows dimensions. A visualization shows the experience.</h2>
+      <p>Awentra is a 3D visualization and digital marketing studio built for real estate developers, builders and property businesses. We build custom walkthroughs, architectural visuals and interiors that let buyers understand a project before a single wall goes up.</p>
+      <p style="margin-top:16px;">No two projects run through the same template here — every walkthrough is planned around the actual drawings, the actual site and the actual story a developer wants to tell.</p>
+    </div>
+    <ul class="fact-list reveal">
+      <li><span>Studio</span><b>Independent, project-led</b></li>
+      <li><span>Based in</span><b>Lucknow, Uttar Pradesh</b></li>
+      <li><span>Works with</span><b>Developers, architects, agencies</b></li>
+      <li><span>Delivery</span><b>Web, social, presentation-ready</b></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="concrete section-pad" id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">What We Do</p>
+      <h2>Six ways to present a project properly.</h2>
+      <p>From a single walkthrough video to a full brand identity — every service is built to help a project sell itself.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="service-grid reveal">
+      <div class="service-card">
+        <span class="service-num">01</span>
+        <h3>3D Walkthrough</h3>
+        <p>Custom walkthrough films for villas, apartments, townships, clubhouses and commercial projects — 30 seconds to 8 minutes, with realistic lighting, day &amp; night views and voice-over.</p>
+        <div class="service-tags"><span>Day &amp; Night</span><span>Voice-over</span><span>Exterior + Interior</span></div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">02</span>
+        <h3>Architectural Visualization</h3>
+        <p>Plans and concepts turned into realistic exterior, interior, building and master-plan visuals so developers and buyers can see the finished project clearly.</p>
+        <div class="service-tags"><span>Exterior</span><span>Interior</span><span>Master Plan</span></div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">03</span>
+        <h3>Project Visualization</h3>
+        <p>Complete environments — gate to plots, roads to amenities — presented as one continuous picture of the finished development.</p>
+        <div class="service-tags"><span>Roads &amp; Parks</span><span>Amenities</span><span>Layouts</span></div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">04</span>
+        <h3>3D Animation &amp; Product Visualization</h3>
+        <p>Animated explainers for products, structures and project features — built to make a complex idea easy to follow in seconds.</p>
+        <div class="service-tags"><span>Explainers</span><span>Structures</span></div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">05</span>
+        <h3>Real Estate Marketing</h3>
+        <p>Social creatives, reels, promotional videos, project presentations and digital ads built around your visualization work.</p>
+        <div class="service-tags"><span>Reels</span><span>Ads</span><span>Presentations</span></div>
+      </div>
+      <div class="service-card">
+        <span class="service-num">06</span>
+        <h3>Branding &amp; Creative Design</h3>
+        <p>Logos, brochures, visiting cards and project profiles — the visual identity that carries a project across every channel.</p>
+        <div class="service-tags"><span>Logo</span><span>Brochure</span><span>Project Profile</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PORTFOLIO ================= -->
+<section class="dark section-pad" id="portfolio">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Selected Work</p>
+      <h2>Every category, one visual standard.</h2>
+      <p>A look across residential, commercial, township, interior and exterior work — and the full walkthroughs that bring them together.</p>
+    </div>
+    <div class="portfolio-tabs reveal">
+      <button class="active">All</button>
+      <button>Residential</button>
+      <button>Commercial</button>
+      <button>Township &amp; Layout</button>
+      <button>Interior</button>
+      <button>Exterior</button>
+      <button>3D Walkthrough</button>
+    </div>
+    <div class="portfolio-grid reveal" id="portfolioGrid">
+      <!-- tiles injected by JS -->
+    </div>
+  </div>
+</section>
+
+<div class="lb-overlay" id="lbOverlay">
+  <div class="lb-card" id="lbCard"></div>
+</div>
+
+<!-- ================= WHY AWENTRA ================= -->
+<section class="light section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Why Awentra</p>
+      <h2>Built to present, not just decorate.</h2>
+    </div>
+    <div class="why-grid reveal">
+      <div class="why-item">
+        <h3>100% Custom Design</h3>
+        <p>Every project is built to its own drawings and site — never a reused template with new labels.</p>
+      </div>
+      <div class="why-item">
+        <h3>Realistic Visualization</h3>
+        <p>Materials, lighting, landscaping and surroundings modelled to match how the project will actually look.</p>
+      </div>
+      <div class="why-item">
+        <h3>Complete Project Presentation</h3>
+        <p>Main gate, roads, parks, buildings and interiors — the whole development, shown as one story.</p>
+      </div>
+      <div class="why-item">
+        <h3>Marketing-Focused</h3>
+        <p>Visuals built to help you present and sell the project, not just to look good in isolation.</p>
+      </div>
+      <div class="why-item">
+        <h3>Professional Quality</h3>
+        <p>3D design, animation and creative marketing combined into one consistent visual identity.</p>
+      </div>
+      <div class="why-item">
+        <h3>One Creative Partner</h3>
+        <p>Visualization and marketing under one roof — one team to brief, one team to approve work with.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROCESS ================= -->
+<section class="dark section-pad" id="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Our Process</p>
+      <h2>From first drawing to final delivery.</h2>
+    </div>
+    <div class="process-list reveal">
+      <div class="process-item">
+        <span class="process-num">01</span>
+        <div><h3>Project Discussion</h3><p>We go through your project, requirements, drawings and vision in detail before anything is built.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="process-num">02</span>
+        <div><h3>Planning &amp; Concept</h3><p>We plan the visual style, camera movement, environment and overall presentation.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="process-num">03</span>
+        <div><h3>3D Development</h3><p>Buildings, roads, landscapes, interiors, exteriors and every project element are modelled.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="process-num">04</span>
+        <div><h3>Review</h3><p>The project is shared for review, and any changes you need are worked in.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="process-num">05</span>
+        <div><h3>Final Production</h3><p>Once approved, we complete rendering, animation, editing, voice-over and final production.</p></div>
+      </div>
+      <div class="process-item">
+        <span class="process-num">06</span>
+        <div><h3>Final Delivery</h3><p>Delivered in the format you need — for presentations, social media, websites or campaigns.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WHO WE WORK WITH ================= -->
+<section class="concrete section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Who We Work With</p>
+      <h2>Built for people who build things.</h2>
+    </div>
+    <ul class="who-chips reveal">
+      <li><span>Real Estate Developers</span></li>
+      <li><span>Builders</span></li>
+      <li><span>Architects</span></li>
+      <li><span>Property Consultants</span></li>
+      <li><span>Construction Companies</span></li>
+      <li><span>Township Developers</span></li>
+      <li><span>Interior Designers</span></li>
+      <li><span>Commercial Property Businesses</span></li>
+      <li><span>Real Estate Marketing Agencies</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="dark section-pad">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Client Feedback</p>
+      <h2>What it's like to work with us.</h2>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <p>"They understood our layout better than some of our own team — the walkthrough matched the site down to the landscaping."</p>
+        <div class="testi-who"><b>Rohit Malhotra</b>Director, residential development firm</div>
+      </div>
+      <div class="testi-card">
+        <p>"Fast turnaround, no repeated back-and-forth over revisions. The final render sold the project before the ribbon was cut."</p>
+        <div class="testi-who"><b>Ayesha Khan</b>Principal Architect</div>
+      </div>
+      <div class="testi-card">
+        <p>"Our sales team now opens every client meeting with the walkthrough. It's changed how fast people say yes."</p>
+        <div class="testi-who"><b>Vikram Sethi</b>Marketing Head, township project</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta-band">
+  <div class="wrap">
+    <p class="eyebrow" style="justify-content:center; color:var(--ink); opacity:.7;">Have a Project in Mind?</p>
+    <h2 style="margin-top:14px;">Let's turn your idea into a visual experience.</h2>
+    <p>Share your project details and we'll get back with how we'd approach it.</p>
+    <div class="cta-buttons">
+      <a href="#contact" class="btn btn-ink">Get a Free Quote</a>
+      <a href="https://wa.me/917355150877" target="_blank" rel="noopener" class="btn btn-outline">WhatsApp Us</a>
+      <a href="#portfolio" class="btn btn-outline">View Our Work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="light section-pad" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-info reveal">
+      <p class="eyebrow">Contact Us</p>
+      <h2>Let's discuss your project.</h2>
+      <p>Send over your drawings, plot details or brochure — we'll come back with a scope and timeline for your review.</p>
+
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.4 21 3 14.6 3 6a2 2 0 0 1 1-2z"/></svg>
+        <a href="tel:+917355150877">+91 73551 50877</a>
+      </div>
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+        <a href="mailto:awentragroup@gmail.com">awentragroup@gmail.com</a>
+      </div>
+      <div class="contact-line">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
+        <span>Lucknow, Uttar Pradesh, India</span>
+      </div>
+
+      <div class="map-frame">
+        <iframe title="Awentra location — Lucknow, Uttar Pradesh" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Lucknow,Uttar%20Pradesh,India&output=embed"></iframe>
+      </div>
+    </div>
+
+    <form class="enquiry reveal" onsubmit="return false;">
+      <div class="field"><label for="f-name">Name</label><input id="f-name" type="text" required></div>
+      <div class="field"><label for="f-company">Company Name</label><input id="f-company" type="text"></div>
+      <div class="field"><label for="f-phone">Phone Number</label><input id="f-phone" type="tel" required></div>
+      <div class="field"><label for="f-email">Email</label><input id="f-email" type="email" required></div>
+      <div class="field full">
+        <label for="f-type">Project Type</label>
+        <select id="f-type">
+          <option>3D Walkthrough</option>
+          <option>Architectural Visualization</option>
+          <option>Real Estate Project Visualization</option>
+          <option>3D Animation</option>
+          <option>Real Estate Marketing</option>
+          <option>Branding &amp; Creative Design</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field full"><label for="f-details">Project Details</label><textarea id="f-details" placeholder="Tell us about the project — location, scope, timeline."></textarea></div>
+      <div class="field full">
+        <label for="f-files">Upload Project Files</label>
+        <div class="file-field">Drawings, layouts or brochures — PDF, JPG, PNG, DWG</div>
+        <input id="f-files" type="file" style="margin-top:10px;" multiple>
+      </div>
+      <div class="field full submit-row">
+        <button type="submit" class="btn btn-ink">Send Enquiry</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">AWENTRA<span>.</span></div>
+        <p>3D Visualization &amp; Real Estate Marketing. Have a project? Let's create something extraordinary.</p>
+        <div class="footer-social">
+          <a href="https://wa.me/917355150877" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20l1.4-4A8 8 0 1 1 9 19l-5 1z"/></svg>
+          </a>
+          <a href="mailto:awentragroup@gmail.com" aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">3D Walkthrough</a></li>
+          <li><a href="#services">Architectural Visualization</a></li>
+          <li><a href="#services">3D Animation</a></li>
+          <li><a href="#services">Real Estate Marketing</a></li>
+          <li><a href="#services">Creative Design</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+917355150877">+91 73551 50877</a></li>
+          <li><a href="mailto:awentragroup@gmail.com">awentragroup@gmail.com</a></li>
+          <li>Lucknow, Uttar Pradesh, India</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Awentra. All rights reserved.</span>
+      <span>Have a project? Let's create something extraordinary.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="floating">
+  <a class="fab fab-whatsapp" href="https://wa.me/917355150877" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20l1.4-4A8 8 0 1 1 9 19l-5 1z"/></svg>
+  </a>
+  <a class="fab fab-call" href="tel:+917355150877" aria-label="Call Awentra">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.4 21 3 14.6 3 6a2 2 0 0 1 1-2z"/></svg>
+  </a>
+</div>
+
+<script>
+  // Header solid on scroll
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('solid', window.scrollY > 40);
+  }, {passive:true});
+
+  // Mobile nav
+  const nav = document.getElementById('primaryNav');
+  const toggle = document.getElementById('menuToggle');
+  toggle.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Portfolio tiles — generated line-art per category
+  // ---- ADD YOUR REAL RENDER IMAGES HERE ----
+  // Put your image files inside an "images" folder next to this HTML file
+  // (e.g. images/villa-elevation.jpg), then just write the filename below.
+  // Leave image: '' (empty) to keep the placeholder line-art for that tile.
+  const categories = [
+    {name:'Residential', tag:'Villa Elevation', image:''},
+    {name:'Residential', tag:'Apartment Complex', image:''},
+    {name:'Commercial', tag:'Office Tower', image:''},
+    {name:'Township & Layout', tag:'Master Plan', image:'images/masterplan.jpg'},
+    {name:'Interior', tag:'Living Room', image:''},
+    {name:'Exterior', tag:'Clubhouse Facade', image:''},
+    {name:'3D Walkthrough', tag:'Township Flythrough', image:''},
+    {name:'Commercial', tag:'Retail Frontage', image:''},
+    {name:'Township & Layout', tag:'Plot Layout', image:'images/plot-layout.jpg', interactive:'plotLayout', link:'masterplan-viewer.html'},
+  ];
+  // Example once you have real files:
+  // {name:'Residential', tag:'Villa Elevation', image:'images/villa-elevation.jpg'},
+  const svgFor = (i) => {
+    const seed = i % 4;
+    const shapes = [
+      `<path d="M40 260 L40 120 L120 70 L200 120 L200 260 Z" stroke="#4a72b8" stroke-width="1.2" fill="none"/>
+       <path d="M40 120 L200 120" stroke="#4a72b8" stroke-width="1.2"/>
+       <rect x="60" y="150" width="26" height="26" stroke="#b08d57" stroke-width="1" fill="none"/>
+       <rect x="110" y="150" width="26" height="26" stroke="#b08d57" stroke-width="1" fill="none"/>
+       <rect x="160" y="150" width="26" height="26" stroke="#b08d57" stroke-width="1" fill="none"/>
+       <path d="M10 260 L230 260" stroke="#4a72b8" stroke-width="1"/>`,
+      `<rect x="40" y="60" width="60" height="200" stroke="#4a72b8" stroke-width="1.2" fill="none"/>
+       <rect x="110" y="100" width="60" height="160" stroke="#4a72b8" stroke-width="1.2" fill="none"/>
+       <rect x="180" y="140" width="45" height="120" stroke="#b08d57" stroke-width="1" fill="none"/>
+       <path d="M10 260 L235 260" stroke="#4a72b8" stroke-width="1"/>`,
+      `<circle cx="120" cy="150" r="70" stroke="#4a72b8" stroke-width="1" fill="none" stroke-dasharray="3 5"/>
+       <path d="M60 150 L180 150 M120 90 L120 210" stroke="#b08d57" stroke-width="1"/>
+       <rect x="90" y="120" width="60" height="60" stroke="#4a72b8" stroke-width="1.2" fill="none"/>`,
+      `<path d="M30 220 L70 160 L110 220 M110 220 L150 140 L190 220 M190 220 L220 180 L230 220" stroke="#4a72b8" stroke-width="1.2" fill="none"/>
+       <path d="M10 220 L235 220" stroke="#b08d57" stroke-width="1"/>`
+    ];
+    return `<svg viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg">
+      <rect width="240" height="280" fill="none"/>
+      <g opacity="0.85">${shapes[seed]}</g>
+    </svg>`;
+  };
+  const grid = document.getElementById('portfolioGrid');
+  categories.forEach((c, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'p-tile' + (c.interactive ? ' interactive' : '');
+    tile.dataset.cat = c.name;
+    const visual = c.image
+      ? `<img src="${c.image}" alt="${c.tag} — ${c.name} 3D visualization by Awentra" loading="lazy">`
+      : svgFor(i);
+    const hint = c.interactive ? `<span class="p-hint">${c.link ? 'Open live demo ↗' : 'Tap to explore'}</span>` : '';
+    tile.innerHTML = `${visual}${hint}<span class="p-cat">${c.name}</span><span class="p-tag">${c.tag}</span>`;
+    if (c.interactive === 'plotLayout' && c.link) {
+      tile.addEventListener('click', () => window.open(c.link, '_blank', 'noopener'));
+    } else if (c.interactive === 'plotLayout') {
+      tile.addEventListener('click', openPlotLayout);
+    }
+    grid.appendChild(tile);
+  });
+
+  // ---- Interactive plot layout lightbox ----
+  const plots = [
+    { id: 1, facing: 'North', size: '1200 sq ft', status: 'booked' },
+    { id: 2, facing: 'North', size: '1200 sq ft', status: 'available' },
+  ];
+  const lbOverlay = document.getElementById('lbOverlay');
+  const lbCard = document.getElementById('lbCard');
+
+  function renderPlotCard(){
+    lbCard.innerHTML = `
+      <div class="lb-head">
+        <div>
+          <h3>Plot Layout</h3>
+          <p>Township &amp; Layout — tap a plot to check its status.</p>
+        </div>
+        <button class="lb-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="plot-legend">
+        <span><span class="plot-dot available"></span>Available</span>
+        <span><span class="plot-dot booked"></span>Booked</span>
+      </div>
+      <div class="plot-grid" id="plotGrid"></div>
+      <div class="plot-detail" id="plotDetail">Tap a plot number above to see its details.</div>
+    `;
+    const plotGrid = lbCard.querySelector('#plotGrid');
+    const plotDetail = lbCard.querySelector('#plotDetail');
+    plots.forEach(p => {
+      const cell = document.createElement('button');
+      cell.className = 'plot-cell ' + p.status;
+      cell.innerHTML = `<span class="num">${p.id}</span><span class="status">${p.status}</span>`;
+      cell.addEventListener('click', () => {
+        if (p.status === 'booked') {
+          plotDetail.innerHTML = `Plot ${p.id} — ${p.facing} facing, ${p.size}. This plot is already booked. Ask us about similar available plots nearby.`;
+        } else {
+          plotDetail.innerHTML = `Plot ${p.id} — ${p.facing} facing, ${p.size}. Available now. <a href="https://wa.me/917355150877" target="_blank" rel="noopener">Enquire on WhatsApp</a>`;
+        }
+      });
+      plotGrid.appendChild(cell);
+    });
+    lbCard.querySelector('.lb-close').addEventListener('click', closePlotLayout);
+  }
+
+  function openPlotLayout(){
+    renderPlotCard();
+    lbOverlay.classList.add('open');
+  }
+  function closePlotLayout(){
+    lbOverlay.classList.remove('open');
+  }
+  lbOverlay.addEventListener('click', (e) => {
+    if (e.target === lbOverlay) closePlotLayout();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePlotLayout();
+  });
+
+  const tabs = document.querySelectorAll('.portfolio-tabs button');
+  tabs.forEach(btn => btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const val = btn.textContent.trim();
+    document.querySelectorAll('.p-tile').forEach(t => {
+      t.style.display = (val === 'All' || t.dataset.cat === val) ? '' : 'none';
+    });
+  }));
+</script>
+</body>
+</html>
