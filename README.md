@@ -1,4 +1,4 @@
-# AYESHA — Interactive 3D Masterplan (React + Three.js)
+# AWENTRA — Interactive 3D Masterplan (React + Three.js)
 
 React + Vite + Three.js (via `@react-three/fiber` + `@react-three/drei`)
 rebuild of the original vanilla-JS masterplan viewer — same features, same
@@ -11,7 +11,7 @@ by JS-rendered masterplan viewers like your reference site.
 You need [Node.js](https://nodejs.org) 18+ installed.
 
 ```bash
-cd ayesha-3d
+cd awentra-3d
 npm install
 npm run dev
 ```
@@ -32,7 +32,7 @@ any static host.
 ## What's inside
 
 ```
-ayesha-3d/
+awentra-3d/
 ├── public/
 │   └── masterplan.png       ← the real aerial masterplan photo (texture)
 ├── src/
